@@ -1,0 +1,43 @@
+config:
+    include:
+        - "train/input_dnn.yaml"
+
+job:
+    job_name: "emu-dnn"
+    job_type: "train"
+    save_dir: "run/example"
+    rdm_seed: 1024
+
+train:
+    model_name: "example_model"
+    model_class: "Model_Sequential_Flat"
+    layers: 4
+    nodes: 128
+    dropout_rate: 0.038
+    momentum: 0.523828
+    nesterov: true
+    test_rate: .2
+    val_split: .25
+    #k_folds: 5
+    learn_rate: 0.355452
+    learn_rate_decay: 1.279e-5
+    batch_size: 32
+    epochs: 40
+    sig_class_weight: 1.
+    bkg_class_weight: 1.
+
+    train_metrics_weighted:
+        - "accuracy"
+        - "auc"
+
+    # early stop setups
+    use_early_stop: true
+    early_stop_paras:
+      #monitor: "val_loss"
+        monitor: "val_auc"
+        min_delta: 0
+        patience: 1
+        mode: "max"
+        restore_best_weights: true
+
+    verbose: 1
